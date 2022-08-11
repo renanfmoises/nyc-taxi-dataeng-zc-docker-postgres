@@ -1,0 +1,10 @@
+URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
+python ingest_data.py \
+    -u=root \
+    -p=root \
+    -H=localhost \
+    -P=5432 \
+    -d=nyc_taxi \
+    -U=${URL} \
+    -f=output.csv \
+    -t=yellow_tripdata_2021_01
