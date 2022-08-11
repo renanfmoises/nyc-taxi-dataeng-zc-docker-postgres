@@ -1,5 +1,8 @@
 # Project specific
 data/
+raw_data/
+*.csv
+*.parquet
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
