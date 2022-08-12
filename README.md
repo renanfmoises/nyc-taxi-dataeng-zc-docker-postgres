@@ -15,7 +15,7 @@ Install my-project with npm
 ```bash
 # TODO
 ```
-    
+
 ## Usage/Examples
 
 ```python
