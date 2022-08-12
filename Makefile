@@ -24,7 +24,7 @@ clean:
 	@rm -fr build dist
 	@rm -fr *.dist-info
 	@rm -fr *.egg-info */*.egg-info
-	@rm -fr .ipynb_checkpoints /.ipynb_checkpoints */*.ipynb_checkpoints
+	@rm -fr .ipynb_checkpoints */.ipynb_checkpoints
 
 install:
 	@pip install . -U
