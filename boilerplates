@@ -1,24 +1,27 @@
-URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
-python ingest_data.py \
-    -u=root \
-    -p=root \
-    -H=localhost \
-    -P=5432 \
-    -d=nyc_taxi \
-    -U=${URL} \
-    -f=output.csv \
-    -t=yellow_tripdata_2021_01
-
+# Download transactional data from URL
 URL="https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet"
 python run_etl.py \
     -u=root \
     -p=root \
     -H=localhost \
     -P=5432 \
-    -d=nyc_taxi \
+    -D=nyc_taxi \
     -U=${URL} \
     -f=output.csv \
     -t=yellow_tripdata_2021_01 \
-    --datetime_columns tpep_dropoff_datetime tpep_pickup_datetime \
+    --dates \
+        --datetime_columns tpep_dropoff_datetime tpep_pickup_datetime \
     --chunks \
         --chunksize=131072
+
+# Download data dictionary from URL
+URL="https://d37ci6vzurychx.cloudfront.net/misc/taxi+_zone_lookup.csv"
+python run_etl.py \
+    -u=root \
+    -p=root \
+    -H=localhost \
+    -P=5432 \
+    -D=nyc_taxi \
+    -U=${URL} \
+    -f=test.csv \
+    -t=nyc_taxi_zones
