@@ -1,6 +1,7 @@
 # Project specific
 data/
 raw_data/
+src_files/
 
 *.csv
 *.parquet

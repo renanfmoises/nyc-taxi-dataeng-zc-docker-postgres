@@ -4,24 +4,49 @@ from dataclasses import dataclass
 import os
 import pandas as pd
 
-@dataclass
+# @dataclass
 class Extract:
-    url: str
-    parquet_file_name: str = "output.parquet"
-    csv_file_name: str = "output.csv"
-    df = None
-    n_rows = None
+    """ This method extracts the data from the source URL and stores it locally.
 
-    def download_parquet(self):
-        """ Download the parquet file and converts and stores it to csv. """
-        os.system(f"wget {self.url} -O {self.parquet_file_name}")
+    Args:
+        url (str): URL of the source data.
+        file_name (str): name of the file to download.
 
-    def get_pandas_df(self):
+    Returns:
+        None
+    """
+    def __init__(self, url: str):
+        self.__accepted_extensions = ["csv", "parquet"]
+        self.__url = url
+        self.__file = self.__url.split("/")[-1]
+
+        self.file_name, self.file_extension = self.__file.split(".")
+        self.pandas_df = None
+        self.n_rows = None
+
+
+    def download_file_from_url(self) -> None:
+        """ Download the source file. """
+
+        if self.file_extension in self.__accepted_extensions:
+            os.system(f"wget {self.__url} -O src_files/{self.file_extension}/{self.file_name}.{self.file_extension}")
+
+        else:
+            raise ValueError(f"File extension {self.file_extension} is not supported. Supported extensions are {self.__accepted_extensions}")
+
+
+    def load_pandas_df(self) -> None:
         """ Load the pandas dataframe into memmory and update n_rows attribute. """
-        self.df = pd.read_parquet(self.parquet_file_name)
-        self.n_rows = self.df.shape[0]
-        return self.df, self.n_rows
+        if self.file_extension == "csv":
+            self.pandas_df = pd.read_csv(f"src_files/csv/{self.file_name}.csv")
 
-    def convert_parquet_to_csv(self):
+        elif self.file_extension == "parquet":
+            self.pandas_df = pd.read_parquet(f"src_files/parquet/{self.file_name}.parquet")
+            self.convert_parquet_to_csv()
+
+        self.n_rows = self.pandas_df.shape[0]
+
+
+    def convert_parquet_to_csv(self) -> None:
         """ Convert the parquet file to csv. """
-        self.df.to_csv(self.csv_file_name, index=False, header=True)
+        self.pandas_df.to_csv(f"src_files/csv/{self.file_name}.csv", index = False)
